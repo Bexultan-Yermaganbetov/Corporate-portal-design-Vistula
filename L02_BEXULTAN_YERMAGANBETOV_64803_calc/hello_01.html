@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Yermaganbetov events, calculator</title>
+    </head>
+    <body>
+        <h1>Simple calculator</h1>
+
+        <input type="number" id="number1bex">
+        <select id="operatorsbex">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+            <option value="%">%</option>
+        </select>
+        <input type="number" id="number2bex">
+        <button onclick="calculatebex()">=</button>
+        <input type="number" id="resultbex" readonly onmouseover="calculatebex()">
+
+        <script>
+            function calculatebex() {
+                let number1bex = document.getElementById("number1bex").value;
+                number1bex = parseInt(number1bex);
+                let number2bex = document.getElementById("number2bex").value;
+                number2bex = parseInt(number2bex);
+
+                let operatorbex = document.getElementById("operatorsbex").value;
+                let resultbex;
+                switch (operatorbex) {
+                    case "+":
+                        resultbex = number1bex + number2bex;
+                        break;
+                    case "-":
+                        resultbex = number1bex - number2bex;
+                        break;
+                    case "*":
+                        resultbex = number1bex * number2bex;
+                        break;
+                    case "/":
+                        resultbex = number1bex / number2bex;
+                        break;
+                    case "%":
+                        resultbex = number1bex % number2bex;
+                        break;
+                    default:
+                        resultbex = "Error";
+                        break;
+                }
+                document.getElementById("resultbex").value = resultbex;
+            }
+        </script>
+    </body>
+</html>
