@@ -1,0 +1,26 @@
+body {
+    text-align: center;
+}
+#page_footer {
+    font-style: italic;
+    font-size: small;
+}
+h3 {
+    color: blue;
+}
+h5 {
+    color: green;
+}
+.container {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+}
+
+#animal {
+    margin: 0 20px; 
+}
+
+#score {
+    margin-top: 20px; 
+}
