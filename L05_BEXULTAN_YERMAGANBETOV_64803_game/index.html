@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Generalized 15 Puzzle Game Bexultan Yermaganbetov 64803</title>
+  </head>
+  <body onload="initGamebex()">
+    <header>
+      <h1>Generalized 15 Puzzle Game Bexultan Yermaganbetov 64803</h1>
+      <h2>Test your skills</h2>
+      <h5>Focus game</h5>
+      <h5>Game time: <span id="time">0</span> seconds</h5>
+    </header>
+    <table id="board"></table>
+    <br />
+    <label>Number of moves: <span id="current">0</span></label>
+    <button onclick="startGamebex()">New Game</button>
+    <label>Game Score: <span id="score">0</span></label>
+    <span id="status"></span>
+    <br /><br />
+    <label for="rows">Rows:</label>
+    <select id="rows"></select>
+    <label for="columns">Columns:</label>
+    <select id="columns"></select>
+    <footer><br />Puzzle Game &#169; 2024</footer>
+    <style>
+      body {
+        text-align: center;
+      }
+      footer {
+        font-style: italic;
+        font-size: small;
+      }
+      table,
+      td,
+      th {
+        border-collapse: collapse;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      td {
+        border: 1px solid;
+        width: 50px;
+        height: 30px;
+        text-align: center;
+      }
+    </style>
+    <script>
+      let minSizebex, maxSizebex;
+      let numRowsbex, numColsbex;
+      let originalNumbersbex = [];
+      let numbersbex = [];
+      let currentMoveCountbex = 0;
+      let scorebex = 0;
+      let gameStartTimebex, gameEndTimebex;
+      let startTimebex, endTimebex;
+      let fullWinAudiobex = new Audio("win-sound.mp3");
+      let smallWinAudiobex = new Audio("smallwin.mp3");
+
+      function initGamebex() {
+        minSizebex = 2;
+        maxSizebex = 8;
+        createSelectOptionsbex();
+        startGamebex();
+      }
+
+      function createSelectOptionsbex() {
+        let rowSelect = document.getElementById("rows");
+        let colSelect = document.getElementById("columns");
+        for (let i = minSizebex; i <= maxSizebex; i++) {
+          let rowOption = document.createElement("option");
+          rowOption.innerHTML = rowOption.value = i;
+          rowSelect.appendChild(rowOption);
+
+          let colOption = document.createElement("option");
+          colOption.innerHTML = colOption.value = i;
+          colSelect.appendChild(colOption);
+        }
+        let defaultSelection = Math.floor(
+          (maxSizebex - minSizebex) / 2
+        );
+        rowSelect.getElementsByTagName("option")[defaultSelection].selected =
+          "selected";
+        colSelect.getElementsByTagName("option")[defaultSelection].selected =
+          "selected";
+      }
+
+      function startGamebex() {
+        numRowsbex = document.getElementById("rows").value;
+        numColsbex = document.getElementById("columns").value;
+        let board = document.getElementById("board");
+        board.innerHTML = "";
+
+        currentMoveCountbex = 0;
+        scorebex = 0;
+        initializeNumbersbex();
+        shuffleNumbersbex();
+        createBoardbex();
+        calculateScorebex();
+        gameStartTimebex = new Date();
+
+startTimebex = Math.round(gameStartTimebex.getTime() / 1000);
+        updateInfobex();
+      }
+
+      function initializeNumbersbex() {
+        originalNumbersbex = [];
+        numbersbex = [];
+        for (let i = 1; i < numRowsbex * numColsbex; i++) {
+          originalNumbersbex.push(i);
+          numbersbex.push(i);
+        }
+        originalNumbersbex.push(0);
+        numbersbex.push(0);
+      }
+
+      function shuffleNumbersbex() {
+        let temp;
+        for (let j, i = numbersbex.length - 2; i > 0; i--) {
+          j = Math.floor(Math.random() * (i + 1));
+          temp = numbersbex[j];
+          numbersbex[j] = numbersbex[i];
+          numbersbex[i] = temp;
+        }
+      }
+
+      function createBoardbex() {
+        let board = document.getElementById("board");
+        for (let i = 0; i < numRowsbex; i++) {
+          let row = board.insertRow(i);
+          for (let j = 0; j < numColsbex; j++) {
+            let cell = row.insertCell(j);
+            cell.id = i + "." + j;
+            let value = numbersbex[i * numColsbex + j];
+            cell.innerHTML = value === 0 ? "" : value;
+
+            cell.onclick = function () {
+              if (cell.innerHTML) {
+                moveTilebex(i, j, cell);
+              }
+            };
+          }
+        }
+      }
+
+      function moveTilebex(i, j, cell) {
+        if (
+          (j > 0 &&
+            document.getElementById(i + "." + (j - 1)).innerHTML === "") ||
+          (i > 0 &&
+            document.getElementById(i - 1 + "." + j).innerHTML === "") ||
+          (j < numColsbex - 1 &&
+            document.getElementById(i + "." + (j + 1)).innerHTML === "") ||
+          (i < numRowsbex - 1 &&
+            document.getElementById(i + 1 + "." + j).innerHTML === "")
+        ) {
+          swapTilesbex(i, j, cell);
+          currentMoveCountbex++;
+          updateInfobex();
+
+          if (checkWinConditionbex()) {
+            displayWinMessagebex(
+              "Congrats. You solved the puzzle.",
+              "win.png",
+              fullWinAudiobex
+            );
+          } else if (checkSemiWinConditionbex()) {
+            displayWinMessagebex(
+              "Congrats. Small win.",
+              "smallwin.png",
+              smallWinAudiobex
+            );
+          }
+        }
+      }
+
+      function swapTilesbex(i, j, cell) {
+        let emptyCell;
+        if (
+          j > 0 &&
+          document.getElementById(i + "." + (j - 1)).innerHTML === ""
+        ) {
+          emptyCell = document.getElementById(i + "." + (j - 1));
+        } else if (
+          i > 0 &&
+          document.getElementById(i - 1 + "." + j).innerHTML === ""
+        ) {
+          emptyCell = document.getElementById(i - 1 + "." + j);
+        } else if (
+          j < numColsbex - 1 &&
+          document.getElementById(i + "." + (j + 1)).innerHTML === ""
+        ) {
+          emptyCell = document.getElementById(i + "." + (j + 1));
+        } else if (
+          i < numRowsbex - 1 &&
+          document.getElementById(i + 1 + "." + j).innerHTML === ""
+        ) {
+          emptyCell = document.getElementById(i + 1 + "." + j);
+        }
+
+        if (emptyCell) {
+
+
+emptyCell.innerHTML = cell.innerHTML;
+          cell.innerHTML = "";
+
+          let emptyIndex =
+            parseInt(emptyCell.id.split(".")[0]) * numColsbex +
+            parseInt(emptyCell.id.split(".")[1]);
+          let currentIndex = i * numColsbex + j;
+          numbersbex[emptyIndex] = numbersbex[currentIndex];
+          numbersbex[currentIndex] = 0;
+        }
+      }
+
+      function calculateScorebex() {
+        scorebex = 0;
+        for (let i = 0; i < numRowsbex * numColsbex; i++) {
+          scorebex += numbersbex[i] == originalNumbersbex[i];
+        }
+      }
+
+      function updateInfobex() {
+        document.getElementById("current").innerHTML = currentMoveCountbex;
+        document.getElementById("score").innerHTML = scorebex;
+        document.getElementById("time").innerHTML =
+          Math.round(new Date().getTime() / 1000) - startTimebex;
+      }
+
+      function checkWinConditionbex() {
+        for (let i = 0; i < numRowsbex * numColsbex - 1; i++) {
+          if (numbersbex[i] !== i + 1) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function checkSemiWinConditionbex() {
+        for (let i = 0; i < numRowsbex * numColsbex - 2; i++) {
+          if (numbersbex[i] !== i + 1) {
+            return false;
+          }
+        }
+        return (
+          numbersbex[numRowsbex * numColsbex - 2] === 0 &&
+          numbersbex[numRowsbex * numColsbex - 1] ===
+            numRowsbex * numColsbex - 1
+        );
+      }
+
+      function displayWinMessagebex(message, image, audio) {
+        gameEndTimebex = new Date();
+        endTimebex = Math.round(gameEndTimebex.getTime() / 1000);
+        let totalTimebex = endTimebex - startTimebex;
+        document.getElementById("status").innerHTML =
+          <img src="${image}" alt="Win Image" width="100"><br> +
+          message +
+          " You completed the puzzle in " +
+          currentMoveCountbex +
+          " moves and " +
+          totalTimebex +
+          " seconds.";
+        audio.play();
+      }
+    </script>
+  </body>
+</html>
