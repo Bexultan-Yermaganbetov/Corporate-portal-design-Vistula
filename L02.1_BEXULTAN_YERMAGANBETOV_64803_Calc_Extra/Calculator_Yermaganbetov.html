@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Calculator Yermaganbetov</title>
+        <link rel="stylesheet" href="css/style_bex.css">
+        <script src="js/scripts_bex.js"></script>
+    </head>
+    <body onload="startCalculatorbex()">
+        <header id="page_header">
+            <h1>Calculator Application</h1>
+        </header>
+
+        <section id="calculatorbex">
+            <h3>Calculator</h3>
+            <input type="number" id="number1bex">
+            <span id="calculatorSelectbex">
+                <select id="selectOperatorbex"></select>
+            </span>
+            <input type="number" id="number2bex">
+            <button onclick="calculatebex()">=</button>
+            <input type="number" id="resultbex" readonly>
+            <br><label id="errorbex"></label>
+            <br><button onclick="toOperatorsbex()">Change operators</button>
+            <button onclick="seeHistorybex()">View calculation history</button>
+        </section>
+
+        <section id="operatorsbex" style="display: none;">
+            <h3>Add/Remove Operator</h3>
+            <span id="removeSelectbex"></span>
+            <button onclick="removeOperatorbex()">Remove operator</button>
+            <br><label>Add operator:</label>
+            <select id="selectAddOperatorbex"></select>
+            <button onclick="addOperatorbex()">Add operator</button>
+            <br><br><button onclick="toCalculatorbex()">Back to calculator</button>
+            <button onclick="seeHistorybex()">View calculation history</button>
+        </section>
+
+        <section id="memorybex" style="display: none;">
+            <table id="memoryCalculationsbex"></table>
+            <br><br><button onclick="toCalculatorbex()">Back to calculator</button>
+            <button onclick="toOperatorsbex()">Change operators</button>
+        </section>
+
+        <footer id="page_footer">
+            <p>Calculator developed by Bexultan Yermaganbetov</p>
+        </footer>
+    </body>
+</html>
