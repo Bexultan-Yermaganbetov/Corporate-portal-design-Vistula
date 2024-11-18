@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Info about Firm - Bexultan Yermaganbetov</title>
+        <link rel="stylesheet" href="styles_BY.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+    </head>
+<body>
+    <h1 style=>Bexcoffeebrew/h1>
+    <p><strong>64803</strong> Bexultan Yermaganbetov ID: <span id="studentID"></span></p>
+    <p><strong>My IDmod80</strong> = <span id="idMod80"></span></p>
+    <p><strong>My IDmod(3+1)</strong> = <span id="idMod3Plus1"></span></p>
+
+    <canvas id="canvas" width="575" height="262"></canvas>
+
+    <nav>
+        <a href="indexBY.html">Homepage</a>
+        <a href="context2DBY.html">Canvas 2D</a>
+        <a href="imgAudioBY.html">Images & sounds</a>
+        <a href="gameBY.html">Game</a>
+    </nav>
+    <footer>
+        <p>Vistula 2024 &copy; Bexultan</p>
+    </footer>
+
+    <script>
+        // Replace '64803' with your actual student ID
+        const studentID = 64803;
+        document.getElementById('studentID').textContent = studentID;
+
+        // IDmod80 calculations
+        const idMod80 = studentID % 80;
+        const idMod80Base10 = idMod80;
+        const idMod80Base3 = idMod80.toString(3);
+
+        // IDmod(3+1) calculation
+        const idMod3Plus1 = (studentID % 3) + 1;
+        const angleInRadians = (Math.PI / 2) * idMod3Plus1;
+        const angleInDegrees = (angleInRadians * (180 / Math.PI)).toFixed(2);
+
+        // Displaying results
+        document.getElementById('idMod80').textContent = `${idMod80Base10} |10 = ${idMod80Base3} |3`;
+        document.getElementById('idMod3Plus1').textContent = `${idMod3Plus1} (Angle = ${angleInDegrees}°)`;
+
+        // Canvas drawing
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function drawVistulaRawShield() {
+            ctx.beginPath();
+            ctx.moveTo(50, 50);
+            ctx.lineTo(150, 50);
+            ctx.lineTo(150, 100);
+            ctx.lineTo(100, 100);
+            ctx.lineTo(100, 150);
+            ctx.lineTo(50, 150);
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function drawVistulaShield() {
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(angleInRadians);
+            ctx.translate(-canvas.width / 2, -canvas.height / 2);
+
+            ctx.beginPath();
+            ctx.moveTo(200, 100);
+            ctx.lineTo(300, 100);
+            ctx.lineTo(300, 150);
+            ctx.lineTo(250, 150);
+            ctx.lineTo(250, 200);
+            ctx.lineTo(200, 200);
+            ctx.closePath();
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        // Draw both shields
+        drawVistulaRawShield();
+        drawVistulaShield();
+    </script>
+</body>
+</html>
